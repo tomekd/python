@@ -4,3 +4,14 @@
  * Wykorzystaj f-string i wyświetl na ekran zawartość zmiennej fullname, w taki sposób, żeby zawartość zmiennej była poprzedzona słowami "Nazywam się ".
  * Wyświetl sumaryczną długość zmiennych firstname i surname. 
 """
+
+firstname = "Tomasz"
+surname = "Dwojak"
+
+print(f"Nazywam się {firstname} {surname}.")
+
+print(firstname.lower())
+
+print("Nazywam się %s %s" % (firstname, surname))
+
+
