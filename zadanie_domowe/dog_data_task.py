@@ -1,14 +1,12 @@
-
 import csv
 from pathlib import Path
+import re
+import pandas as pd
+import statistics as st
 
 with open(Path(__file__).parent / './dogs-data.csv', encoding='utf-8') as data_file:
     dog_data = csv.DictReader(data_file)
     dog_data = list(dog_data)
-
-print(dog_data[0])
-
-
 
 """
 Zadanie 1
@@ -35,3 +33,27 @@ d)  Zapisz do plik `terriers.txt` nazwy wszystkich Terrierów wraz z ich liczebn
 
 """
 
+# a
+breeds = sorted(set(map(lambda entry: re.sub(r'[^A-Za-z ]+', '', entry['Breed']), dog_data)))
+
+# b
+df = pd.DataFrame(dog_data)
+the_most_popular_breed = df.groupby('OwnerAge')['Breed'].apply(list).to_dict()
+
+for k, v in the_most_popular_breed.items():
+    the_most_popular_breed[k] = st.mode(v)
+
+# c
+dogs_ages = list(map(lambda entry: int(entry['DogAge']), dog_data))
+
+mode = st.mode(dogs_ages)
+mean = st.mean(dogs_ages)
+var = st.variance(dogs_ages)
+
+# d
+terriers = df.groupby('Breed')['DogAge'].count().to_dict()
+terriers = dict(filter(lambda entry: 'terrier' in entry[0].lower(), terriers.items()))
+
+with open(Path(__file__).parent / './terriers.csv', 'w', newline='') as f:
+    w = csv.writer(f)
+    w.writerows(terriers.items())

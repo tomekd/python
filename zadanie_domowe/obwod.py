@@ -6,7 +6,14 @@ oznaczającymi współrzędne x i y wierzchołka.
 Przykład:
 obwod([(0,0), (0,1), (1,1), (1,0)]) == 4
 """
+import math
 
 
 def obwod(points):
-    pass
+    perimeter = 0
+    for i, point in enumerate(points):
+        perimeter += math.dist(point, points[(i + 1) % len(points)])
+    return perimeter
+
+
+print(obwod([(0, 0), (0, 1), (1, 1), (1, 0)]))
